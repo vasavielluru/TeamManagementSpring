@@ -64,7 +64,7 @@ pipeline{
     }''',
  
     buildName: 'holyFrog',
-    buildNumber: '42'
+    buildNumber: '48'
 )
      }}
      stage('download from artifactory')
