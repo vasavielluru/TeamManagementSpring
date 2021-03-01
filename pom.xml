@@ -10,8 +10,8 @@
 		<version>2.3.8.RELEASE</version>
 	</parent>
 	<properties>
-  <sonar.projectKey>kowsalya30g_Springproject</sonar.projectKey>
-  <sonar.organization>kowsalya30g</sonar.organization>
+  <sonar.projectKey>springAws1</sonar.projectKey>
+  <sonar.organization>keerthi-battula</sonar.organization>
   <sonar.host.url>https://sonarcloud.io</sonar.host.url>
 </properties>
 	<dependencies>
