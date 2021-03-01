@@ -27,7 +27,12 @@ pipeline{
               }
             }
           }
-          
+         stage("Quality gate") {
+      
+            steps {
+                waitForQualityGate abortPipeline: true
+            }
+        } 
   
     stage('collect artifact'){
      steps{
