@@ -1,5 +1,9 @@
 pipeline{
   agent any 
+  environment{
+         AWS_REGION='us-east-2'
+         AWS_DEFAULT_REGION='us-east-2'
+     }
     tools { 
         maven 'maven'
         jdk 'jdk'
@@ -87,8 +91,8 @@ pipeline{
     stage("deploy artifact to s3"){
        steps{
          withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'ae860e1b-2a44-44d2-b424-82f53bb45510', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
-            s3Upload(pathStyleAccessEnabled: true, payloadSigningEnabled: true,file:'TeamManagement-0.0.2-SNAPSHOT.jar', bucket:'keerthibucket999', path:'/var/jenkins_home/workspace/jenkinsAws/target/TeamManagement-0.0.2-SNAPSHOT.jar')
-       
+            
+       s3Upload(file:'/var/jenkins_home/workspace/jenkinsAws/target/TeamManagement-0.0.2-SNAPSHOT.jar', bucket:'keerthibucket999', path:'sampleFile/TeamManagement-0.0.2-SNAPSHOT.jar')
       }
         }
         }
