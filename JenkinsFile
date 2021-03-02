@@ -78,8 +78,8 @@ pipeline{
 
      stage("deploy to ec2"){
        steps{
-            sshagent(['b2bdd39f-ed2d-4608-b4fe-c46986ca611e']){
-                    sh 'scp -r /var/jenkins_home/workspace/jenkinsAws/*.jar ubuntu@34.219.39.172:/home/ubuntu/artifact'
+            sshagent(['f223bff7-3639-47b2-a15d-9db79e4acf39']){
+                    sh 'scp -r /var/jenkins_home/workspace/jenkinsAws/*.jar ubuntu@18.237.232.22:/home/ubuntu/artifact'
         }
        }
      }
