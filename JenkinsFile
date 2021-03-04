@@ -83,7 +83,7 @@ pipeline{
      stage("deploy to ec2"){
        steps{
             sshagent([43e7be73-7fc3-4c18-aeaf-03825088ec00]){
-                    sh "ssh -o StrictHostKeyChecking=no ubuntu@18.237.232.22 'echo $HOME'"   
+                    sh "ssh -o StrictHostKeyChecking=no ubuntu@54.69.175.223 'echo $HOME'"   
                     sh 'scp -r /var/jenkins_home/workspace/jenkinsAws/target/TeamManagement-0.0.2-SNAPSHOT.jar ubuntu@54.69.175.223:/home/ubuntu/artifact'
         }
        }
