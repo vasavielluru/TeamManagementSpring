@@ -1,12 +1,12 @@
 pipeline{
   agent any 
   environment{
-         AWS_REGION='us-east-2'
-         AWS_DEFAULT_REGION='us-east-2'
+         AWS_REGION='us-west-2c'
+         AWS_DEFAULT_REGION='us-west-2c'
      }
     tools { 
-        maven 'maven'
-        jdk 'jdk'
+        maven 'Maven'
+        jdk 'jdk8'
     }
   
   stages {
@@ -25,7 +25,7 @@ pipeline{
     stage("Build & SonarQube analysis") {
             agent any
             steps {
-              withSonarQubeEnv('SonarSpring') {
+              withSonarQubeEnv('SonarServer') {
                 sh 'java -version'
                 sh 'mvn clean package sonar:sonar'
               }
@@ -48,12 +48,12 @@ pipeline{
      steps{
      
      rtUpload (
-    serverId: 'ARTIFACTORY_SERVER',
+    serverId: 'Artifactory_Server',
     spec: '''{
           "files": [
             {
               "pattern": "target/*.jar",
-              "target": "art-doc-dev-loc"
+              "target": "art-doc-dev-loc/sample"
             }
          ]
     }''',
@@ -67,11 +67,11 @@ pipeline{
             steps{
      
                 rtDownload (
-                    serverId: 'ARTIFACTORY_SERVER',
+                    serverId: 'Artifactory_Server',
                     spec: '''{
                     "files": [
                          {
-                             "pattern": "art-doc-dev-loc/",
+                             "pattern": "art-doc-dev-loc/sample/",
                              "target": ""
                         }
                      ]
@@ -82,19 +82,13 @@ pipeline{
 
      stage("deploy to ec2"){
        steps{
-            sshagent(['f223bff7-3639-47b2-a15d-9db79e4acf39']){
+            sshagent([43e7be73-7fc3-4c18-aeaf-03825088ec00]){
                     sh "ssh -o StrictHostKeyChecking=no ubuntu@18.237.232.22 'echo $HOME'"   
-                    sh 'scp -r /var/jenkins_home/workspace/jenkinsAws/target/TeamManagement-0.0.2-SNAPSHOT.jar ubuntu@18.237.232.22:/home/ubuntu/artifact'
+                    sh 'scp -r /var/jenkins_home/workspace/jenkinsAws/target/TeamManagement-0.0.2-SNAPSHOT.jar ubuntu@54.69.175.223:/home/ubuntu/artifact'
         }
        }
      }
-    stage("deploy artifact to s3"){
-       steps{
-         withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'ae860e1b-2a44-44d2-b424-82f53bb45510', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
-            
-       s3Upload(file:'/var/jenkins_home/workspace/jenkinsAws/target/TeamManagement-0.0.2-SNAPSHOT.jar', bucket:'keerthibucket999', path:'sampleFile/TeamManagement-0.0.2-SNAPSHOT.jar')
-      }
-        }
+   
         }
      
      
